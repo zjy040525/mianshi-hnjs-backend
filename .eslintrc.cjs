@@ -1,4 +1,6 @@
-module.exports = {
+const { defineConfig } = require('eslint-define-config');
+
+module.exports = defineConfig({
   env: {
     browser: true,
     es2021: true,
@@ -16,4 +18,4 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {},
-};
+});
