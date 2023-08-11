@@ -16,6 +16,7 @@
     "build:ts": "tsc",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
     "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
+    "prepare": "husky install",
     "start": "npm run build:ts && fastify start -l info dist/app.js",
     "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 tap --ts \"test/**/*.test.ts\"",
     "watch:ts": "tsc -w"
@@ -47,6 +48,8 @@
     "eslint-define-config": "^1.23.0",
     "eslint-plugin-prettier": "^5.0.0",
     "fastify-tsconfig": "^1.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "prettier": "3.0.1",
     "prettier-plugin-organize-imports": "^3.2.3",
     "prettier-plugin-packagejson": "^2.4.5",

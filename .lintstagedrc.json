@@ -1,0 +1,5 @@
+{
+  "^.+\\..+$": "prettier --cache --write",
+  "*.js": ["eslint --fix", "prettier --cache --write"],
+  "*.ts": ["eslint --fix", "prettier --cache --parser=typescript --write"]
+}
