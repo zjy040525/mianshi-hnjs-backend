@@ -24,7 +24,12 @@ const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
         });
       }
 
-      const user = false;
+      const user = await fastify.user.findOne({
+        where: {
+          username,
+          password,
+        },
+      });
 
       if (!user) {
         reply.code(400).send({

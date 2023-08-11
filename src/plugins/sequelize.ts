@@ -6,8 +6,8 @@ class User extends Model {}
 class Student extends Model {}
 
 export default fp(
-  async (fastify) => {
-    fastify.register(async (fastify, options, done) => {
+  async (instance) => {
+    instance.register(async (fastify, _opts, done) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const [host, port]: any[] = process.env.MYSQL_ADDRESS.split(':');
       const sequelize = new Sequelize({
