@@ -1,4 +1,5 @@
 // This file contains code that we reuse between our tests.
+import dotenv from 'dotenv';
 import helper from 'fastify-cli/helper.js';
 import path from 'path';
 import tap from 'tap';
@@ -6,14 +7,17 @@ import { fileURLToPath } from 'url';
 
 export type Test = (typeof tap)['Test']['prototype'];
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = fileURLToPath(import.meta?.url);
 const __dirname = path.dirname(__filename);
 const AppPath = path.join(__dirname, '..', 'src', 'app.ts');
 
 // Fill in this config with all the configurations
 // needed for testing the application
 async function config() {
-  return {};
+  // 加载测试环境的配置
+  const commonConfig = dotenv.config();
+  const testConfig = dotenv.config({ path: '.env.test' });
+  return Object.assign(commonConfig, testConfig);
 }
 
 // Automatically build and tear down our instance

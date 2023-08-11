@@ -7,8 +7,8 @@ export interface SupportPluginOptions {
 // The use of fastify-plugin is required to be able
 // to export the decorators to the outer scope
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default fp<SupportPluginOptions>(async (instance, opts) => {
-  instance.decorate('someSupport', function () {
+export default fp<SupportPluginOptions>(async (fastify) => {
+  fastify.decorate('someSupport', function () {
     return 'hugs';
   });
 });

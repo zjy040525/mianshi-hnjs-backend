@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import fp from 'fastify-plugin';
 
 export default fp(
-  async (instance) => {
-    instance.register((fastify, _opts, done) => {
+  async (fastify) => {
+    await fastify.register((fastify, _options, done) => {
       dotenv.config();
       const mode = process.env.NODE_ENV;
 
@@ -20,6 +20,10 @@ export default fp(
           override: true,
         });
         console.log(chalk.blue('production'));
+      } else {
+        // 测试环境是独立的node环境，这里无法正常加载环境配置
+        // 正确的环境配置在test/helper.ts里面的config函数
+        console.log(chalk.blue('test'));
       }
       fastify.decorate('dotenv', dotenv);
       done();
