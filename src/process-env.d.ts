@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: 'development' | 'production';
+      NODE_ENV: 'development' | 'production' | 'test';
       MYSQL_ADDRESS: string;
       MYSQL_USERNAME: string;
       MYSQL_PASSWORD: string;
