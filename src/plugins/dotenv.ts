@@ -4,7 +4,7 @@ import fp from 'fastify-plugin';
 
 export default fp(
   async (fastify) => {
-    await fastify.register((fastify, _options, done) => {
+    await fastify.register((_fastify, _options, done) => {
       dotenv.config();
       const mode = process.env.NODE_ENV;
 

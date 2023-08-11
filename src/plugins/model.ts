@@ -7,7 +7,7 @@ class Student extends Model {}
 
 export default fp(
   async (fastify) => {
-    await fastify.register(async (fastify, _options, done) => {
+    await fastify.register(async (_fastify, _options, done) => {
       User.init(
         {
           username: {
@@ -58,8 +58,6 @@ export default fp(
           timestamps: false,
         },
       );
-      await fastify.sequelize.authenticate();
-      console.log(chalk.green('Connection has been established successfully.'));
       await fastify.sequelize.sync();
       console.log(chalk.green('All models were synchronized successfully.'));
       fastify.decorate('user', User);
