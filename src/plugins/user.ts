@@ -8,8 +8,6 @@ const roles: EnvInstance<Role> = {
     signable: [['sign', '开发用签到管理员']],
     interviewable: [['interview', '开发用面试管理员']],
     administerable: [['admin', '开发用系统管理员']],
-    // 在开发环境设置此属性，将替换开发环境所有管理员的密码，即便给某个管理员单独设置了密码
-    password: process.env.LOGIN_PASSWORD ?? '88888888',
   },
   test: {
     signable: [['test_sign', '测试用签到管理员', 'test_sign1234']],
@@ -64,8 +62,8 @@ export default fp(
       for (const [username, nickname, password] of users) {
         try {
           const pwd = new Password(
-            mode === 'development' && roles.development.password
-              ? roles.development.password
+            mode === 'development' && process.env.LOGIN_PASSWORD
+              ? process.env.LOGIN_PASSWORD
               : password || Password.random(),
           );
           await fastify.user.create(
