@@ -22,6 +22,7 @@ const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
           data: null,
           message: '请求参数无效！',
         });
+        return;
       }
 
       const user = await fastify.user.findOne({
@@ -32,11 +33,12 @@ const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
       });
 
       if (!user) {
-        reply.code(400).send({
-          code: 400,
+        reply.code(401).send({
+          code: 401,
           data: null,
           message: '用户名或密码错误！',
         });
+        return;
       }
 
       reply.send({

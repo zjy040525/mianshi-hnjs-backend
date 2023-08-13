@@ -19,7 +19,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
   opts,
 ): Promise<void> => {
   // Place here your custom code!
-  fastify.register(fastifyCors, {});
+  void fastify.register(fastifyCors);
 
   // Do not touch the following lines
 
