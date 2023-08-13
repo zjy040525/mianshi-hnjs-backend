@@ -5,14 +5,32 @@ import { Sequelize } from 'sequelize';
 export default fp(
   async (fastify) => {
     await fastify.register(async (_fastify, _options, done) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const [host, port]: any[] = process.env.MYSQL_ADDRESS.split(':');
+      const { MYSQL_USERNAME, MYSQL_DATABASE, MYSQL_PASSWORD, MYSQL_ADDRESS } =
+        process.env;
+
+      if (!MYSQL_ADDRESS) {
+        console.log(
+          chalk.red('required `MYSQL_ADDRESS` environment variable!'),
+        );
+        process.exit(1);
+      }
+
+      if (!MYSQL_DATABASE) {
+        console.log(
+          chalk.red('required `MYSQL_DATABASE` environment variable!'),
+        );
+        process.exit(1);
+      }
+
+      const [host, port] = MYSQL_ADDRESS.split(':');
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const sequelize = new Sequelize({
         host,
         port,
-        username: process.env.MYSQL_USERNAME,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
+        username: MYSQL_USERNAME,
+        password: MYSQL_PASSWORD,
+        database: MYSQL_DATABASE,
         dialect: 'mysql',
       });
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

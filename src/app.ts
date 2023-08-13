@@ -1,4 +1,5 @@
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
+import fastifyCors from '@fastify/cors';
 import { FastifyPluginAsync } from 'fastify';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -18,6 +19,7 @@ const app: FastifyPluginAsync<AppOptions> = async (
   opts,
 ): Promise<void> => {
   // Place here your custom code!
+  fastify.register(fastifyCors, {});
 
   // Do not touch the following lines
 
