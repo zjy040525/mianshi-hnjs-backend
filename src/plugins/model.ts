@@ -20,8 +20,12 @@ export default fp(
             type: DataTypes.STRING,
             allowNull: false,
           },
-          permission: {
-            type: DataTypes.ENUM('SIGN', 'INTERVIEW', 'MANAGE'),
+          role: {
+            type: DataTypes.ENUM(
+              'sign-all',
+              'interview-all',
+              'administration-all',
+            ),
             allowNull: false,
           },
         },
@@ -73,7 +77,7 @@ export default fp(
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    user: typeof User;
-    student: typeof Student;
+    readonly user: typeof User;
+    readonly student: typeof Student;
   }
 }

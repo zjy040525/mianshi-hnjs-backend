@@ -27,6 +27,7 @@ export default fp(
         console.log(chalk.blue('test'));
       }
       fastify.decorate('dotenv', dotenv);
+      fastify.decorate('mode', mode);
       done();
     });
   },
@@ -37,6 +38,7 @@ export default fp(
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    dotenv: typeof dotenv;
+    readonly dotenv: typeof dotenv;
+    readonly mode: typeof process.env.NODE_ENV;
   }
 }

@@ -17,7 +17,11 @@ async function config() {
   // 加载测试环境的配置
   const commonConfig = dotenv.config();
   const testConfig = dotenv.config({ path: '.env.test' });
-  return Object.assign(commonConfig, testConfig);
+  return {
+    ...commonConfig,
+    ...testConfig,
+    NODE_ENV: 'test',
+  };
 }
 
 // Automatically build and tear down our instance

@@ -52,6 +52,6 @@ export default fp(
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    sequelize: Sequelize;
+    readonly sequelize: Sequelize;
   }
 }

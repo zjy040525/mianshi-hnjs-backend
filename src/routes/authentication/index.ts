@@ -1,3 +1,4 @@
+import CryptoJS from 'crypto-js';
 import { FastifyPluginAsync, FastifyRequest } from 'fastify';
 
 type BodyType = Partial<{
@@ -28,7 +29,7 @@ const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
       const user = await fastify.user.findOne({
         where: {
           username,
-          password,
+          password: CryptoJS.SHA256(password).toString(),
         },
       });
 

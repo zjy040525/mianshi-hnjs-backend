@@ -6,6 +6,7 @@ declare global {
       MYSQL_USERNAME?: string;
       MYSQL_PASSWORD?: string;
       MYSQL_DATABASE?: string;
+      LOGIN_PASSWORD?: string;
     }
   }
 }
