@@ -21,7 +21,8 @@ export default fp(
         });
         console.log(chalk.blue('production'));
       } else {
-        // 测试环境是独立的node环境，这里无法正常加载环境配置
+        // test environment
+        // 测试环境是独立的node环境，这里不能拿到process.env
         // 正确的环境配置在test/helper.ts里面的config函数
         console.log(chalk.blue('test'));
       }
