@@ -33,8 +33,8 @@ test('测试sign登录成功', async (t) => {
     url: '/authentication',
     method: 'POST',
     payload: {
-      username: 'test_sign',
-      password: 'test_sign1234',
+      username: 'sign',
+      password: 'test1234',
     },
   });
   t.equal(JSON.parse(res.payload).message, '登录成功！');
@@ -47,8 +47,8 @@ test('测试interview登录成功', async (t) => {
     url: '/authentication',
     method: 'POST',
     payload: {
-      username: 'test_iview',
-      password: 'test_iview1234',
+      username: 'interview',
+      password: 'test1234',
     },
   });
   t.equal(JSON.parse(res.payload).message, '登录成功！');
@@ -61,8 +61,8 @@ test('测试admin登录成功', async (t) => {
     url: '/authentication',
     method: 'POST',
     payload: {
-      username: 'test_admin',
-      password: 'test_admin1234',
+      username: 'admin',
+      password: 'test1234',
     },
   });
   t.equal(JSON.parse(res.payload).message, '登录成功！');

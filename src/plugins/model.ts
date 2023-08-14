@@ -21,11 +21,7 @@ export default fp(
             allowNull: false,
           },
           role: {
-            type: DataTypes.ENUM(
-              'sign-all',
-              'interview-all',
-              'administration-all',
-            ),
+            type: DataTypes.ENUM('sign-all', 'interview-all', 'admin-all'),
             allowNull: false,
           },
         },

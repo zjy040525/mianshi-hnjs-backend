@@ -19,10 +19,12 @@ export default fp(
         });
       }
       // 测试环境的变量在`test/helper.ts`中的config函数进行配置
-      // 测试环境是独立的node环境，无法在这里拿到process.env
+      // 测试环境是独立的node环境，这里不能获取到
       // ...
 
+      // 打印当前环境
       console.log(chalk.magenta(mode));
+      // 添加到fastify全局实例上，方便后续路由或插件使用
       fastify.decorate('dotenv', dotenv);
       fastify.decorate('mode', mode);
       done();
