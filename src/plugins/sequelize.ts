@@ -36,7 +36,9 @@ export default fp(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       fastify.decorate('sequelize', sequelize);
-      await fastify.sequelize.authenticate();
+      await fastify.sequelize.authenticate({
+        logging: false,
+      });
       console.log(chalk.green('Connection has been established successfully.'));
       fastify.addHook('onClose', (_request, done) =>
         sequelize.close().finally(done),

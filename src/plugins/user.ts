@@ -62,8 +62,8 @@ export default fp(
       for (const [username, nickname, password] of users) {
         try {
           const pwd = new Password(
-            mode === 'development' && process.env.LOGIN_PASSWORD
-              ? process.env.LOGIN_PASSWORD
+            mode === 'development' && process.env.REPLACE_PASSWORD
+              ? process.env.REPLACE_PASSWORD
               : password || Password.random(),
           );
           await fastify.user.create(

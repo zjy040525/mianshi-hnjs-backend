@@ -14,14 +14,26 @@ const AppPath = path.join(__dirname, '..', 'src', 'app.ts');
 // Fill in this config with all the configurations
 // needed for testing the application
 async function config() {
-  // 加载测试环境的配置
-  const commonConfig = dotenv.config();
-  const testConfig = dotenv.config({ path: '.env.test' });
-  return {
-    ...commonConfig,
-    ...testConfig,
-    NODE_ENV: 'test',
-  };
+  // .env
+  dotenv.config();
+  // .env.test
+  dotenv.config({
+    path: '.env.test',
+    override: true,
+  });
+  // populate `NODE_ENV` flag
+  dotenv.populate(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    process.env,
+    {
+      NODE_ENV: 'test',
+    },
+    {
+      override: true,
+    },
+  );
+  return {};
 }
 
 // Automatically build and tear down our instance

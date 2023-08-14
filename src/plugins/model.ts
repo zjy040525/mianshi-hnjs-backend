@@ -62,7 +62,9 @@ export default fp(
           timestamps: false,
         },
       );
-      await fastify.sequelize.sync();
+      await fastify.sequelize.sync({
+        logging: false,
+      });
       console.log(chalk.green('All models were synchronized successfully.'));
       fastify.decorate('user', User);
       fastify.decorate('student', Student);
