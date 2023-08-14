@@ -10,7 +10,7 @@ type BodyType = Partial<{
  * 用户身份认证
  * @param fastify
  */
-const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
+const authentication: FastifyPluginAsync = async (fastify) => {
   fastify.route({
     url: '/',
     method: 'POST',
