@@ -27,6 +27,12 @@ const app: FastifyPluginAsync<AppOptions> = async (
   if (process.env.SECRET_KEY) {
     void fastify.register(fastifyJwt, {
       secret: process.env.SECRET_KEY,
+      sign: {
+        algorithm: 'HS256',
+        expiresIn: '7d',
+        aud: 'mianshi-hnjs',
+        iss: 'mianshi-hnjs-backend',
+      },
     });
   } else {
     console.log(chalk.red('required `SECRET_KEY` environment variable!'));
