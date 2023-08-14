@@ -1,6 +1,9 @@
-import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
+import type { AutoloadPluginOptions } from '@fastify/autoload';
+import AutoLoad from '@fastify/autoload';
 import fastifyCors from '@fastify/cors';
-import { FastifyPluginAsync } from 'fastify';
+import fastifyJwt from '@fastify/jwt';
+import chalk from 'chalk';
+import type { FastifyPluginAsync } from 'fastify';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -20,6 +23,15 @@ const app: FastifyPluginAsync<AppOptions> = async (
 ): Promise<void> => {
   // Place here your custom code!
   void fastify.register(fastifyCors);
+
+  if (process.env.SECRET_KEY) {
+    void fastify.register(fastifyJwt, {
+      secret: process.env.SECRET_KEY,
+    });
+  } else {
+    console.log(chalk.red('required `SECRET_KEY` environment variable!'));
+    process.exit(1);
+  }
 
   // Do not touch the following lines
 

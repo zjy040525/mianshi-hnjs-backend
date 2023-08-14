@@ -2,7 +2,13 @@ import chalk from 'chalk';
 import fp from 'fastify-plugin';
 import { DataTypes, Model } from 'sequelize';
 
-class User extends Model {}
+class User extends Model {
+  declare id: number;
+  declare username: string;
+  declare nickname: string;
+  declare password: string;
+  declare role: string;
+}
 class Student extends Model {}
 
 export default fp(

@@ -34,7 +34,6 @@ class Password {
 
 export default fp(
   async (fastify) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const createUser = async (users: string | undefined, role: string) => {
       if (users) {
         const mode = fastify.mode;

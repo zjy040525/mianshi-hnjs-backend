@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { FastifyPluginAsync, FastifyRequest } from 'fastify';
+import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
 
 type BodyType = Partial<{
   username: string;
@@ -42,10 +42,20 @@ const authentication: FastifyPluginAsync = async (fastify): Promise<void> => {
         return;
       }
 
+      const token = fastify.jwt.sign({
+        username: user.username,
+        nickname: user.nickname,
+        password: user.password,
+        role: user.role,
+      });
       reply.send({
         code: 200,
         data: {
-          username,
+          token,
+          id: user.id,
+          username: user.username,
+          nickname: user.nickname,
+          role: user.role,
         },
         message: '登录成功！',
       });

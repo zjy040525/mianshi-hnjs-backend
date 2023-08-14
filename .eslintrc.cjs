@@ -17,5 +17,7 @@ module.exports = defineConfig({
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: {
+    '@typescript-eslint/consistent-type-imports': 'warn',
+  },
 });
