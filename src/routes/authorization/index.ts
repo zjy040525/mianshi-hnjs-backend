@@ -10,10 +10,16 @@ const authentication: FastifyPluginAsync = async (fastify) => {
     method: 'POST',
     async onRequest(request, reply) {
       try {
-        const payload = await request.jwtVerify();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const payload: any = await request.jwtVerify();
         reply.send({
           code: 200,
-          data: payload,
+          data: {
+            id: payload.id,
+            username: payload.username,
+            nickname: payload.nickname,
+            role: payload.role,
+          },
           message: 'ok',
         });
       } catch (e) {

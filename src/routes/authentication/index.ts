@@ -43,6 +43,7 @@ const authentication: FastifyPluginAsync = async (fastify) => {
       }
 
       const token = fastify.jwt.sign({
+        id: user.id,
         username: user.username,
         nickname: user.nickname,
         password: user.password,
