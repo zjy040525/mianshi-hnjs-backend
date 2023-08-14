@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 import helper from 'fastify-cli/helper.js';
 import path from 'path';
+import process from 'process';
 import tap from 'tap';
 import { fileURLToPath } from 'url';
 
