@@ -19,7 +19,14 @@ const interview: FastifyPluginAsync = async (fastify) => {
       } = request.body as RequestBodyType;
 
       // 获取请求携带过来的参数
-      if (!studentId) {
+      if (
+        !(
+          studentId &&
+          earlyChildhoodEducation &&
+          tourismManagement &&
+          urbanRailTransit
+        )
+      ) {
         reply.code(400).send(
           fastify.assign({
             code: 400,
@@ -85,7 +92,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
           reply.code(400).send(
             fastify.assign({
               code: 400,
-              message: '该学生对应的面试用户不存在，请联系上级！',
+              message: '该学生对应的用户不存在，请联系上级！',
             }),
           );
           return;
@@ -120,6 +127,12 @@ const interview: FastifyPluginAsync = async (fastify) => {
             id: studentId,
           },
         },
+      );
+      reply.send(
+        fastify.assign({
+          code: 200,
+          message: '操作成功！',
+        }),
       );
     },
   });
