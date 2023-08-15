@@ -7,9 +7,25 @@ class User extends Model {
   declare username: string;
   declare nickname: string;
   declare password: string;
-  declare role: string;
+  declare role: 'sign-all' | 'interview-all' | 'admin-all';
 }
-class Student extends Model {}
+class Student extends Model {
+  declare name: string;
+  declare gender: string;
+  declare id_card: string;
+  declare graduated_school: string;
+  declare telephone_number: string;
+  declare registration_number: string;
+  declare sign_status: boolean;
+  declare signed_date: string;
+  declare signed_operator: null | number;
+
+  declare interview_xq: 'Processing' | 'Success' | 'Failed';
+  declare interview_ly: 'Processing' | 'Success' | 'Failed';
+  declare interview_gd: 'Processing' | 'Success' | 'Failed';
+  declare interviewed_date: string;
+  declare interviewed_operator: null | number;
+}
 
 export default fp(
   async (fastify) => {
@@ -68,8 +84,8 @@ export default fp(
         logging: false,
       });
       console.log(chalk.green('All models were synchronized successfully.'));
-      fastify.decorate('user', User);
-      fastify.decorate('student', Student);
+      fastify.decorate('userModel', User);
+      fastify.decorate('studentModel', Student);
       done();
     });
   },
@@ -81,7 +97,7 @@ export default fp(
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    readonly user: typeof User;
-    readonly student: typeof Student;
+    readonly userModel: typeof User;
+    readonly studentModel: typeof Student;
   }
 }

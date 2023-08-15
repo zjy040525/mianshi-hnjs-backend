@@ -8,29 +8,23 @@ const authentication: FastifyPluginAsync = async (fastify) => {
   fastify.route({
     url: '/',
     method: 'POST',
-    async onRequest(request, reply) {
-      try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const payload: any = await request.jwtVerify();
-        reply.send({
+    preHandler: [fastify.preHandler],
+    async handler(request, reply) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { id, username, nickname, role }: any = request.user;
+      reply.send(
+        fastify.assign({
           code: 200,
           data: {
-            id: payload.id,
-            username: payload.username,
-            nickname: payload.nickname,
-            role: payload.role,
+            id,
+            username,
+            nickname,
+            role,
           },
-          message: 'ok',
-        });
-      } catch (e) {
-        reply.code(401).send({
-          code: 401,
-          data: null,
-          message: e.code,
-        });
-      }
+        }),
+      );
+      return;
     },
-    async handler() {},
   });
 };
 

@@ -2,8 +2,11 @@ import type { AutoloadPluginOptions } from '@fastify/autoload';
 import AutoLoad from '@fastify/autoload';
 import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
+import fastifyView from '@fastify/view';
+import fastifyWebsocket from '@fastify/websocket';
 import chalk from 'chalk';
 import type { FastifyPluginAsync } from 'fastify';
+import handlebars from 'handlebars';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -22,22 +25,30 @@ const app: FastifyPluginAsync<AppOptions> = async (
   opts,
 ): Promise<void> => {
   // Place here your custom code!
-  void fastify.register(fastifyCors);
-
-  if (process.env.SECRET_KEY) {
-    void fastify.register(fastifyJwt, {
-      secret: process.env.SECRET_KEY,
-      sign: {
-        algorithm: 'HS256',
-        expiresIn: '7d',
-        aud: 'mianshi-hnjs',
-        iss: 'mianshi-hnjs-backend',
-      },
-    });
-  } else {
+  if (!process.env.SECRET_KEY) {
     console.log(chalk.red('required `SECRET_KEY` environment variable!'));
     process.exit(1);
   }
+  // cors
+  void fastify.register(fastifyCors);
+  // jwt
+  void fastify.register(fastifyJwt, {
+    secret: process.env.SECRET_KEY,
+    sign: {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+      aud: 'mianshi-hnjs',
+      iss: 'mianshi-hnjs-backend',
+    },
+  });
+  // ws
+  void fastify.register(fastifyWebsocket);
+  // html
+  void fastify.register(fastifyView, {
+    engine: {
+      handlebars,
+    },
+  });
 
   // Do not touch the following lines
 

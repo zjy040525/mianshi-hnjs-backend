@@ -1,11 +1,6 @@
 import CryptoJS from 'crypto-js';
 import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
 
-type BodyType = Partial<{
-  username: string;
-  password: string;
-}>;
-
 /**
  * 用户身份认证
  * @param fastify
@@ -18,15 +13,16 @@ const authentication: FastifyPluginAsync = async (fastify) => {
       const { username, password } = request.body;
 
       if (!(username && password)) {
-        reply.code(400).send({
-          code: 400,
-          data: null,
-          message: '请求参数无效！',
-        });
+        reply.code(400).send(
+          fastify.assign({
+            code: 400,
+            message: '请求参数无效！',
+          }),
+        );
         return;
       }
 
-      const user = await fastify.user.findOne({
+      const user = await fastify.userModel.findOne({
         where: {
           username,
           password: CryptoJS.SHA256(password).toString(),
@@ -34,11 +30,12 @@ const authentication: FastifyPluginAsync = async (fastify) => {
       });
 
       if (!user) {
-        reply.code(401).send({
-          code: 401,
-          data: null,
-          message: '用户名或密码错误！',
-        });
+        reply.code(401).send(
+          fastify.assign({
+            code: 401,
+            message: '用户名或密码错误！',
+          }),
+        );
         return;
       }
 
@@ -49,19 +46,26 @@ const authentication: FastifyPluginAsync = async (fastify) => {
         password: user.password,
         role: user.role,
       });
-      reply.send({
-        code: 200,
-        data: {
-          token,
-          id: user.id,
-          username: user.username,
-          nickname: user.nickname,
-          role: user.role,
-        },
-        message: '登录成功！',
-      });
+      reply.send(
+        fastify.assign({
+          code: 200,
+          data: {
+            token,
+            id: user.id,
+            username: user.username,
+            nickname: user.nickname,
+            role: user.role,
+          },
+          message: '登录成功！',
+        }),
+      );
     },
   });
 };
 
 export default authentication;
+
+type BodyType = Partial<{
+  username: string;
+  password: string;
+}>;

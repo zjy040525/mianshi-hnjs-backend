@@ -26,7 +26,7 @@ test('测试用户名或密码错误', async (t) => {
   t.equal(JSON.parse(res.payload).message, '用户名或密码错误！');
 });
 
-test('测试sign登录成功', async (t) => {
+test('测试用户sign登录成功', async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
@@ -40,7 +40,7 @@ test('测试sign登录成功', async (t) => {
   t.equal(JSON.parse(res.payload).message, '登录成功！');
 });
 
-test('测试interview登录成功', async (t) => {
+test('测试用户interview登录成功', async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
@@ -54,7 +54,7 @@ test('测试interview登录成功', async (t) => {
   t.equal(JSON.parse(res.payload).message, '登录成功！');
 });
 
-test('测试admin登录成功', async (t) => {
+test('测试用户admin登录成功', async (t) => {
   const app = await build(t);
 
   const res = await app.inject({
