@@ -85,7 +85,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
           reply.code(400).send(
             fastify.assign({
               code: 400,
-              message: '该学生对应的面试操作员不存在，请联系管理员！',
+              message: '该学生对应的面试用户不存在，请联系上级！',
             }),
           );
           return;
