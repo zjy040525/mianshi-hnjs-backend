@@ -11,7 +11,13 @@ const interview: FastifyPluginAsync = async (fastify) => {
     method: 'GET',
     preHandler: [fastify.preHandler],
     async handler(request, reply) {
-      const { studentId, xq, gd, ly } = request.body as BodyType;
+      const {
+        studentId,
+        earlyChildhoodEducation,
+        tourismManagement,
+        urbanRailTransit,
+      } = request.body as RequestBodyType;
+
       // 获取请求携带过来的参数
       if (!studentId) {
         reply.code(400).send(
@@ -28,6 +34,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
           id: studentId,
         },
       });
+
       if (!student) {
         reply.code(400).send(
           fastify.assign({
@@ -46,6 +53,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
           password,
         },
       });
+
       if (!user) {
         reply.code(400).send(
           fastify.assign({
@@ -66,15 +74,13 @@ const interview: FastifyPluginAsync = async (fastify) => {
         return;
       }
 
-      if (
-        student.interviewed_operator &&
-        student.interviewed_operator !== user.id
-      ) {
+      if (student.interviewedUserId && student.interviewedUserId !== user.id) {
         const user = await fastify.userModel.findOne({
           where: {
-            id: student.interviewed_operator,
+            id: student.interviewedUserId,
           },
         });
+
         if (!user) {
           reply.code(400).send(
             fastify.assign({
@@ -96,11 +102,18 @@ const interview: FastifyPluginAsync = async (fastify) => {
 
       await fastify.studentModel.update(
         {
-          interview_xq: student.interview_xq ? xq : null,
-          interview_ly: student.interview_ly ? ly : null,
-          interview_gd: student.interview_gd ? gd : null,
-          interviewed_date: Sequelize.fn('now'),
-          interviewed_operator: user.id,
+          earlyChildhoodEducationInterview:
+            student.earlyChildhoodEducationInterview
+              ? earlyChildhoodEducation
+              : null,
+          tourismManagementInterview: student.tourismManagementInterview
+            ? tourismManagement
+            : null,
+          urbanRailTransitInterview: student.urbanRailTransitInterview
+            ? urbanRailTransit
+            : null,
+          interviewedDate: Sequelize.fn('now'),
+          interviewedUserId: user.id,
         },
         {
           where: {
@@ -112,11 +125,11 @@ const interview: FastifyPluginAsync = async (fastify) => {
   });
 };
 
-type BodyType = Partial<{
+type RequestBodyType = Partial<{
   studentId: string;
-  xq: string;
-  gd: string;
-  ly: string;
+  earlyChildhoodEducation: string;
+  tourismManagement: string;
+  urbanRailTransit: string;
 }>;
 
 export default interview;

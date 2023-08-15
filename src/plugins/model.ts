@@ -10,21 +10,42 @@ class User extends Model {
   declare role: 'sign-all' | 'interview-all' | 'admin-all';
 }
 class Student extends Model {
+  // 姓名
   declare name: string;
+  // 性别
   declare gender: string;
-  declare id_card: string;
-  declare graduated_school: string;
-  declare telephone_number: string;
-  declare registration_number: string;
-  declare sign_status: boolean;
-  declare signed_date: string;
-  declare signed_operator: null | number;
-
-  declare interview_xq: 'Processing' | 'Success' | 'Failed';
-  declare interview_ly: 'Processing' | 'Success' | 'Failed';
-  declare interview_gd: 'Processing' | 'Success' | 'Failed';
-  declare interviewed_date: string;
-  declare interviewed_operator: null | number;
+  // 身份证号
+  declare idCard: string;
+  // 毕业学校
+  declare graduatedSchool: string;
+  // 手机号
+  declare telephoneNumber: string;
+  // 中考报名序号
+  declare registrationNumber: string;
+  // 签到状态
+  declare signStatus: boolean;
+  // 签到时间
+  declare signedDate: string;
+  // 执行签到的用户
+  declare signedUserId: null | number;
+  // 学前专业面试
+  declare earlyChildhoodEducationInterview:
+    | 'Processing'
+    | 'Success'
+    | 'Failed'
+    | null;
+  // 旅游专业面试
+  declare tourismManagementInterview:
+    | 'Processing'
+    | 'Success'
+    | 'Failed'
+    | null;
+  // 城轨专业面试
+  declare urbanRailTransitInterview: 'Processing' | 'Success' | 'Failed' | null;
+  // 面试时间
+  declare interviewedDate: string;
+  // 执行面试的用户
+  declare interviewedUserId: null | number;
 }
 
 export default fp(
@@ -57,22 +78,34 @@ export default fp(
         {
           name: DataTypes.STRING,
           gender: DataTypes.STRING,
-          id_card: DataTypes.STRING,
-          graduated_school: DataTypes.STRING,
-          telephone_number: DataTypes.STRING,
-          registration_number: DataTypes.STRING,
-          sign_status: {
+          idCard: DataTypes.STRING,
+          graduatedSchool: DataTypes.STRING,
+          telephoneNumber: DataTypes.STRING,
+          registrationNumber: DataTypes.STRING,
+          signStatus: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
           },
-          signed_date: DataTypes.DATE,
-          signed_operator: DataTypes.INTEGER,
-          interview_xq: DataTypes.ENUM('Processing', 'Success', 'Failed'),
-          interview_ly: DataTypes.ENUM('Processing', 'Success', 'Failed'),
-          interview_gd: DataTypes.ENUM('Processing', 'Success', 'Failed'),
-          interviewed_date: DataTypes.DATE,
-          interviewed_operator: DataTypes.INTEGER,
+          signedDate: DataTypes.DATE,
+          signedUserId: DataTypes.INTEGER,
+          earlyChildhoodEducationInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
+          tourismManagementInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
+          urbanRailTransitInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
+          interviewedDate: DataTypes.DATE,
+          interviewedUserId: DataTypes.INTEGER,
         },
         {
           sequelize: fastify.sequelize,

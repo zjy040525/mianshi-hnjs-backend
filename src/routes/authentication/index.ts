@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 
 /**
  * 用户身份认证
@@ -9,8 +9,8 @@ const authentication: FastifyPluginAsync = async (fastify) => {
   fastify.route({
     url: '/',
     method: 'POST',
-    async handler(request: FastifyRequest<{ Body: BodyType }>, reply) {
-      const { username, password } = request.body;
+    async handler(request, reply) {
+      const { username, password } = request.body as RequestBodyType;
 
       if (!(username && password)) {
         reply.code(400).send(
@@ -65,7 +65,7 @@ const authentication: FastifyPluginAsync = async (fastify) => {
 
 export default authentication;
 
-type BodyType = Partial<{
+type RequestBodyType = Partial<{
   username: string;
   password: string;
 }>;
