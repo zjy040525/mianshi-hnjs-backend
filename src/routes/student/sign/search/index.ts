@@ -50,7 +50,7 @@ const search: FastifyPluginAsync = async (fastify) => {
         return;
       }
 
-      const students = await fastify.studentModel.findAll({
+      const student = await fastify.studentModel.findAll({
         where: {
           // 学生身份证模糊查询
           idCard: {
@@ -68,7 +68,7 @@ const search: FastifyPluginAsync = async (fastify) => {
       reply.send(
         fastify.assign({
           code: 200,
-          data: students,
+          data: await fastify.assoc(student),
         }),
       );
     },

@@ -119,6 +119,39 @@ export default fp(
       console.log(chalk.green('All models were synchronized successfully.'));
       fastify.decorate('userModel', User);
       fastify.decorate('studentModel', Student);
+      fastify.decorate('assoc', async (students) => {
+        return await Promise.all(
+          students.map(async (student) => {
+            let signedUser = null;
+            let interviewedUser = null;
+
+            if (student.signedUserId) {
+              signedUser = await fastify.userModel.findOne({
+                where: {
+                  id: student.signedUserId,
+                },
+                attributes: ['username', 'nickname'],
+                logging: false,
+              });
+            }
+
+            if (student.interviewedUserId) {
+              interviewedUser = await fastify.userModel.findOne({
+                where: {
+                  id: student.interviewedUserId,
+                },
+                attributes: ['username', 'nickname'],
+                logging: false,
+              });
+            }
+            return {
+              ...student.dataValues,
+              signedUser,
+              interviewedUser,
+            };
+          }),
+        );
+      });
       done();
     });
   },
@@ -132,5 +165,7 @@ declare module 'fastify' {
   export interface FastifyInstance {
     readonly userModel: typeof User;
     readonly studentModel: typeof Student;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readonly assoc: (students: Student[]) => Promise<Student[]>;
   }
 }
