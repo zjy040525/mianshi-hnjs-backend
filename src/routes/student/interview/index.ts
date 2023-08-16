@@ -8,7 +8,7 @@ import { Sequelize } from 'sequelize';
 const interview: FastifyPluginAsync = async (fastify) => {
   fastify.route({
     url: '/',
-    method: 'GET',
+    method: 'PATCH',
     preHandler: [fastify.preHandler],
     async handler(request, reply) {
       const {
@@ -16,7 +16,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
         earlyChildhoodEducation,
         tourismManagement,
         urbanRailTransit,
-      } = request.body as RequestBodyType;
+      } = request.body as BodyType;
 
       // 获取请求携带过来的参数
       if (
@@ -138,7 +138,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
   });
 };
 
-type RequestBodyType = Partial<{
+type BodyType = Partial<{
   studentId: string;
   earlyChildhoodEducation: string;
   tourismManagement: string;
