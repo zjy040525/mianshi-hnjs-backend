@@ -75,7 +75,7 @@ INTERVIEW_USERS='[["interview","测试用面试管理员"]]'
 ADMIN_USERS='[["admin","测试用系统管理员"]]'
 
 # 注意：测试环境如果为用户指定密码将全部无效，使用下面的变量进行替代
-TEST_PASSWORD=测试用密码
+TEST_PASSWORD=用于测试环境的密码（必填）
 ```
 
 环境变量配置完成后，启动服务
