@@ -106,34 +106,38 @@ const print: FastifyPluginAsync = async (fastify) => {
 
       const qrCodeImage = await readFile('src/templates/QRCode.jpg');
       const qrCode = `data:image/jpg;base64,${qrCodeImage.toString('base64')}`;
-      const majors = [];
-      if (student.urbanRailTransitInterview) {
-        majors.push({ value: '城市轨道交通运输与管理' });
-      }
-      if (student.tourismManagementInterview) {
-        majors.push({ value: '旅游服务与管理' });
-      }
-      if (student.earlyChildhoodEducationInterview) {
-        majors.push({ value: '幼儿教育' });
-      }
-      const scoreList = majors.map((major, index) => {
-        if (!index) {
-          Object.defineProperty(major, 'isHead', {
-            value: true,
-          });
-        }
-        return major;
-      });
-      console.log('scoreList', scoreList);
-      const showList = majors
+      const majors = [
+        student.urbanRailTransitInterview
+          ? { weight: 3, name: '城市轨道交通运输与管理' }
+          : { weight: 0, name: null },
+        student?.tourismManagementInterview
+          ? { weight: 2, name: '旅游服务与管理' }
+          : { weight: 0, name: null },
+        student?.earlyChildhoodEducationInterview
+          ? { weight: 1, name: '幼儿教育' }
+          : { weight: 0, name: null },
+      ];
+
+      const scoreList = majors
+        .sort((a, b) => b.weight - a.weight)
         .map((major, index) => {
-          if (index === majors.length - 1) {
-            return `&nbsp; &nbsp; ${major.value}`;
+          if (!index) {
+            Object.defineProperty(major, 'isHead', {
+              value: true,
+            });
           }
-          return `&nbsp; &nbsp; ${major.value}<br/><br/>`;
+          return major;
+        });
+      const showList = majors
+        .filter((major) => major.name)
+        .sort((a, b) => b.weight - a.weight)
+        .map((major, index) => {
+          if (index === majors.length - 1 || index < 1) {
+            return `&nbsp; &nbsp; ${major.name}`;
+          }
+          return `&nbsp; &nbsp; ${major.name}<br/><br/>`;
         })
         .join('');
-      console.log('showList', showList);
       // Handlebars: Access has been denied to resolve the property "id" because it is not an "own property" of its parent.
       // You can add a runtime option to disable the check or this warning:
       // See https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access for details

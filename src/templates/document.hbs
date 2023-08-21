@@ -91,17 +91,25 @@
     <table style='border-collapse: collapse; width: 100%;' border='1'>
       <tbody>
         {{#each scoreList}}
-          <tr style='height: 28px;'>
-            {{#if this.isHead}}
-              <td
-                style='width: 15%; text-align: center;'
-                rowspan='3'
-              >面试成绩</td>
-            {{/if}}
-            <td style='width: 32%;'>&nbsp; &nbsp; {{this.value}}</td>
-            <td style='width: 22%;'>&nbsp; &nbsp; □通过&nbsp; &nbsp; □不通过</td>
-            <td style='width: 32%;'>&nbsp; &nbsp; 评委签字（盖章）________</td>
-          </tr>
+          {{#if this.name}}
+            <tr style='height: 28px;'>
+              {{#if this.isHead}}
+                <td
+                  style='width: 15%; text-align: center;'
+                  rowspan='3'
+                >面试成绩</td>
+              {{/if}}
+              <td style='width: 32%;'>&nbsp; &nbsp; {{this.name}}</td>
+              <td style='width: 22%;'>&nbsp; &nbsp; □通过&nbsp; &nbsp; □不通过</td>
+              <td style='width: 32%;'>&nbsp; &nbsp; 评委签字（盖章）________</td>
+            </tr>
+          {{else}}
+            <tr style='height: 28px;'>
+              <td style='width: 32%'>&nbsp;</td>
+              <td style='width: 22%'>&nbsp;</td>
+              <td style='width: 32%'>&nbsp;</td>
+            </tr>
+          {{/if}}
         {{/each}}
         <tr style='height: 28px;'>
           <td style='width: 15%; text-align: center;'>备注</td>
