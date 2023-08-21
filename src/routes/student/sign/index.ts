@@ -95,6 +95,7 @@ const sign: FastifyPluginAsync = async (fastify) => {
       reply.send(
         fastify.assign({
           code: 200,
+          data: await fastify.assoc(student),
           message: '签到成功！',
         }),
       );

@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>面试单</title>
+  </head>
+  <body>
+    <h2 style='text-align:center;'>2023年海宁技师学院招生面试单（1）</h2>
+    <p style='text-align:center;'>报到时间：{{parsedDate}}
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      系统序号：
+      {{id}}
+    </p>
+    <table style='border-collapse: collapse; width: 100%;' border='1'>
+      <tbody>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>姓&nbsp; &nbsp; &nbsp; 名</td>
+          <td style='width: 35%;'>&nbsp; &nbsp; {{name}}</td>
+          <td style='width: 50%; text-align: center;' rowspan='4'>微信公众号<br
+            /><img src='{{qrCode}}' width='100' height='100' alt='二维码' />
+          </td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>身份证号码</td>
+          <td style='width: 35%;'>&nbsp; &nbsp; {{idCard}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>性&nbsp; &nbsp; &nbsp; 别</td>
+          <td style='width: 35%;'>&nbsp; &nbsp; {{gender}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>初中学校</td>
+          <td style='width: 35%;'>&nbsp; &nbsp; {{graduatedSchool}}</td>
+        </tr>
+        <tr style='height: 140px;'>
+          <td style='width: 15%; text-align: center;'>面试专业</td>
+          <td style='width: 35%;'>{{{showList}}}</td>
+          <td
+            style='width: 50%; text-align: center; vertical-align: top;'
+          >面试完成后，由工作人员在本栏内签字或盖章。</td>
+        </tr>
+      </tbody>
+    </table>
+    &nbsp; &nbsp; &nbsp; &nbsp; 注：面试结果请关注“海宁技师学院”微信公众号<br
+    /><br />
+    <hr style='border:1px dashed  #000' />
+    <h2 style='text-align:center;'>2023年海宁技师学院招生面试单（2）</h2>
+    <p style='text-align:center;'>报到时间：{{parsedDate}}
+      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      系统序号：
+      {{id}}
+    </p>
+    <table style='border-collapse: collapse; width: 100%;' border='1'>
+      <tbody>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>姓&nbsp; &nbsp; &nbsp; 名</td>
+          <td style='width: 85%;' colspan='3'>&nbsp; &nbsp; {{name}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>身份证号码</td>
+          <td style='width: 85%; ' colspan='3'>&nbsp; &nbsp; {{idCard}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center; '>性&nbsp; &nbsp; &nbsp; 别</td>
+          <td style='width: 85%; ' colspan='3'>&nbsp; &nbsp; {{gender}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>初中学校</td>
+          <td style='width: 85%;' colspan='3'>&nbsp; &nbsp;
+            {{graduatedSchool}}</td>
+        </tr>
+        <tr style='height: 140px;'>
+          <td style='width: 15%; text-align: center; '>面试专业</td>
+          <td tyle='width: 85%;' colspan='3'>{{{showList}}}</td>
+        </tr>
+        <tr style='height: 28px;'>
+          <td style='15%; text-align: center;'>备注</td>
+          <td tyle='width: 85%;' colspan='3'>
+            <p>&nbsp; &nbsp; &nbsp; &nbsp; □身高 &nbsp; &nbsp; &nbsp; &nbsp;
+              □纹身 &nbsp; &nbsp;&nbsp; &nbsp; □烫发染发 &nbsp; &nbsp; &nbsp;
+              &nbsp; □身体残疾 &nbsp; &nbsp; &nbsp; &nbsp; □其他__________</p>
+          </td>
+        </tr>
+        <tr style='height: 40px;'>
+          <td style='width: 15%; text-align: center;'>面试信息确认<br
+            />（考生签字）</td>
+          <td style='width: 85%;' colspan='3'>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <table style='border-collapse: collapse; width: 100%;' border='1'>
+      <tbody>
+        {{#each scoreList}}
+          <tr style='height: 28px;'>
+            {{#if this.isHead}}
+              <td
+                style='width: 15%; text-align: center;'
+                rowspan='3'
+              >面试成绩</td>
+            {{/if}}
+            <td style='width: 32%;'>&nbsp; &nbsp; {{this.value}}</td>
+            <td style='width: 22%;'>&nbsp; &nbsp; □通过&nbsp; &nbsp; □不通过</td>
+            <td style='width: 32%;'>&nbsp; &nbsp; 评委签字（盖章）________</td>
+          </tr>
+        {{/each}}
+        <tr style='height: 28px;'>
+          <td style='width: 15%; text-align: center;'>备注</td>
+          <td style='width: 80%;' colspan='3'>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>&nbsp;</p></body>
+</html>

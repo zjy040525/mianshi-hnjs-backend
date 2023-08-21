@@ -1,4 +1,5 @@
 import type { FastifyPluginAsync } from 'fastify';
+import { readFile } from 'fs/promises';
 
 /**
  * 打印面试单
@@ -103,43 +104,45 @@ const print: FastifyPluginAsync = async (fastify) => {
         return;
       }
 
-      const interviewItems = [
-        student?.urbanRailTransitInterview
-          ? { weight: 3, element: '城市轨道交通运输与管理' }
-          : { weight: 0, element: null },
-        student?.tourismManagementInterview
-          ? { weight: 2, element: '旅游服务与管理' }
-          : { weight: 0, element: null },
-        student?.earlyChildhoodEducationInterview
-          ? { weight: 1, element: '幼儿教育' }
-          : { weight: 0, element: null },
-      ];
-      const interviewHtmlNodes = interviewItems
-        .filter((value) => value.element)
-        .sort((a, b) => b.weight - a.weight)
-        .map((value, index, array) => {
-          let wrap = '';
-          if (index === array.length - 1) {
-            wrap = '<br/><br/>';
+      const qrCodeImage = await readFile('src/templates/QRCode.jpg');
+      const qrCode = `data:image/jpg;base64,${qrCodeImage.toString('base64')}`;
+      const majors = [];
+      if (student.urbanRailTransitInterview) {
+        majors.push({ value: '城市轨道交通运输与管理' });
+      }
+      if (student.tourismManagementInterview) {
+        majors.push({ value: '旅游服务与管理' });
+      }
+      if (student.earlyChildhoodEducationInterview) {
+        majors.push({ value: '幼儿教育' });
+      }
+      const scoreList = majors.map((major, index) => {
+        if (!index) {
+          Object.defineProperty(major, 'isHead', {
+            value: true,
+          });
+        }
+        return major;
+      });
+      console.log('scoreList', scoreList);
+      const showList = majors
+        .map((major, index) => {
+          if (index === majors.length - 1) {
+            return `&nbsp; &nbsp; ${major.value}`;
           }
-          return '&nbsp; &nbsp; ' + value.element + wrap;
+          return `&nbsp; &nbsp; ${major.value}<br/><br/>`;
         })
         .join('');
-      const interviewTextNodes = interviewItems
-        .sort((a, b) => b.weight - a.weight)
-        .map((value, index) => {
-          if (index === 0) {
-            Object.defineProperty(value, 'isHead', true);
-          }
-          return value;
-        });
-      // 返回html文件
-      reply.view('index.hbs', {
-        timestamp: new Date().getTime(),
-        student,
-        signeDate: new Date(student.signedDate).toLocaleString('zh-CN'),
-        interviewHtmlNodes,
-        interviewTextNodes,
+      console.log('showList', showList);
+      // Handlebars: Access has been denied to resolve the property "id" because it is not an "own property" of its parent.
+      // You can add a runtime option to disable the check or this warning:
+      // See https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access for details
+      return reply.view('src/templates/document.hbs', {
+        qrCode,
+        parsedDate: new Date(student.signedDate).toLocaleString('zh-Hans'),
+        ...student.dataValues,
+        scoreList,
+        showList,
       });
     },
   });
