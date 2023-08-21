@@ -132,7 +132,7 @@ const print: FastifyPluginAsync = async (fastify) => {
         .filter((major) => major.name)
         .sort((a, b) => b.weight - a.weight)
         .map((major, index) => {
-          if (index === majors.length - 1 || index < 1) {
+          if (index === majors.length - 1 || majors.length === 1) {
             return `&nbsp; &nbsp; ${major.name}`;
           }
           return `&nbsp; &nbsp; ${major.name}<br/><br/>`;
