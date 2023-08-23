@@ -1,10 +1,10 @@
-# 海宁技师学院面试管理系统后端
+# mianshi-hnjs-backend
 
-面试管理系统后端项目
+海宁技师学院面试管理系统后端
 
 ## Install
 
-该项目使用[Node.js](http://nodejs.org)，请确保你安装了它，版本建议 >=16
+项目使用[Node.js](http://nodejs.org)，请确保你安装了它，版本建议 >=16
 
 配置npm国内镜像源
 
