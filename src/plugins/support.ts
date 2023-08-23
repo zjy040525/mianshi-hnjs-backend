@@ -1,6 +1,7 @@
 import fp from 'fastify-plugin';
 
 export default fp(async (fastify) => {
+  // JWT验证处理
   fastify.decorate('preHandler', async (request, reply) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,6 +26,7 @@ export default fp(async (fastify) => {
       return;
     }
   });
+  // 合并返回对象
   fastify.decorate('assign', ({ code, data = null, message = 'ok' }) => {
     return {
       code,

@@ -27,7 +27,7 @@ export default fp(
               logging: false,
             });
             if (user) {
-              throw new HandleException();
+              throw new Exception();
             }
             // 到这里注册用户
             await fastify.userModel.create(
@@ -52,7 +52,7 @@ export default fp(
               );
             }
           } catch (e) {
-            if (e instanceof HandleException) {
+            if (e instanceof Exception) {
               // 在非test环境下显示创建失败信息
               if (mode !== 'test') {
                 console.log(
@@ -114,6 +114,6 @@ class Password {
   }
 }
 
-class HandleException {
+class Exception {
   constructor() {}
 }

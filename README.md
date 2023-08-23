@@ -27,8 +27,10 @@ $ npm install
 ```dotenv
 # 通用环境下的变量（所有环境下都有效）
 
+APP_NAME=应用名称
+DOCUMENT_NAME=打印用文档的标题
 SECRET_KEY=自定义密钥，用于认证授权（请不要将你的密钥泄露给他人）
-MYSQL_ADDRESS=MySQL地址（e.g. `localhost:3306`）
+MYSQL_ADDRESS=MySQL地址（e.g.`localhost:3306`）
 MYSQL_USERNAME=MySQL用户名
 MYSQL_PASSWORD=MySQL密码
 ```

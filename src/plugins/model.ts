@@ -10,6 +10,8 @@ class User extends Model {
   declare role: 'sign-all' | 'interview-all' | 'admin-all';
 }
 class Student extends Model {
+  // 主键
+  declare id: number;
   // 姓名
   declare name: string;
   // 性别
@@ -113,6 +115,7 @@ export default fp(
           timestamps: false,
         },
       );
+      // 同步模型
       await fastify.sequelize.sync({
         logging: false,
       });
@@ -120,6 +123,10 @@ export default fp(
       fastify.decorate('userModel', User);
       fastify.decorate('studentModel', Student);
       fastify.decorate('assoc', async (studentList) => {
+        /**
+         * 合并用户信息字段对象
+         * @param student 学生对象模型
+         */
         const assoc = async (student: Student) => {
           let signedUser = null;
           let interviewedUser = null;

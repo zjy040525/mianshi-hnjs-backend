@@ -24,7 +24,7 @@ const sign: FastifyPluginAsync = async (fastify) => {
         return;
       }
 
-      const student = await fastify.studentModel.findOne({
+      let student = await fastify.studentModel.findOne({
         where: {
           id: studentId,
         },
@@ -92,6 +92,11 @@ const sign: FastifyPluginAsync = async (fastify) => {
           },
         },
       );
+      // 更新最新数据
+      student = await student.reload();
+      // 发送对应的socket通知
+      await fastify.notification.sign(student, user);
+
       reply.send(
         fastify.assign({
           code: 200,

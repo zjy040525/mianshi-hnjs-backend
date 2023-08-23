@@ -19,14 +19,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
       } = request.body as BodyType;
 
       // 获取请求携带过来的参数
-      if (
-        !(
-          studentId &&
-          earlyChildhoodEducation &&
-          tourismManagement &&
-          urbanRailTransit
-        )
-      ) {
+      if (!studentId) {
         reply.code(400).send(
           fastify.assign({
             code: 400,
@@ -36,7 +29,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
         return;
       }
 
-      const student = await fastify.studentModel.findOne({
+      let student = await fastify.studentModel.findOne({
         where: {
           id: studentId,
         },
@@ -128,9 +121,15 @@ const interview: FastifyPluginAsync = async (fastify) => {
           },
         },
       );
+      // 更新最新数据
+      student = await student.reload();
+      // 发送对应的socket通知
+      await fastify.notification.interview(student, user);
+
       reply.send(
         fastify.assign({
           code: 200,
+          data: await fastify.assoc(student),
           message: '操作成功！',
         }),
       );

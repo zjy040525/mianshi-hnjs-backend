@@ -55,7 +55,7 @@ const search: FastifyPluginAsync = async (fastify) => {
         isNaN(parseInt(studentId)) || parseInt(studentId) < 1
           ? 1
           : parseInt(studentId);
-      const students = await fastify.studentModel.findAll({
+      const student = await fastify.studentModel.findAll({
         where: {
           // 必须是完成签到的
           signStatus: true,
@@ -74,7 +74,7 @@ const search: FastifyPluginAsync = async (fastify) => {
       reply.send(
         fastify.assign({
           code: 200,
-          data: students,
+          data: await fastify.assoc(student),
         }),
       );
     },

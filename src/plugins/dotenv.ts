@@ -6,17 +6,20 @@ export default fp(
   async (fastify) => {
     await fastify.register(async (_fastify, _options, done) => {
       const mode = process.env.NODE_ENV;
-      if (mode === 'development') {
-        dotenv.config();
-        dotenv.config({
-          path: '.env.development',
-          override: true,
-        });
-      } else if (mode === 'production') {
-        dotenv.config({
-          path: '.env.production',
-          override: true,
-        });
+      switch (mode) {
+        case 'development':
+          dotenv.config();
+          dotenv.config({
+            path: '.env.development',
+            override: true,
+          });
+          break;
+        case 'production':
+          dotenv.config({
+            path: '.env.production',
+            override: true,
+          });
+          break;
       }
       // 测试环境的变量在`test/helper.ts`中的config函数进行配置
       // 测试环境是独立的node环境，这里不能获取到

@@ -16,6 +16,10 @@ declare global {
       ADMIN_USERS?: string;
       // 测试环境用密码
       TEST_PASSWORD?: string;
+      // 打印用文档的标题
+      DOCUMENT_NAME?: string;
+      // 应用名称
+      APP_NAME?: string;
     }
   }
 }
