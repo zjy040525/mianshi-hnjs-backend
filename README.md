@@ -102,7 +102,7 @@ $ npm start
 
 ## Maintainers
 
-[@zjy040525](https://github.com/zjy040525)。
+[@zjy040525](https://github.com/zjy040525)
 
 ## Contributing
 
