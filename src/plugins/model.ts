@@ -151,7 +151,7 @@ export default fp(
             });
           }
           return {
-            ...student.dataValues,
+            ...student.toJSON(),
             signedUser,
             interviewedUser,
           };

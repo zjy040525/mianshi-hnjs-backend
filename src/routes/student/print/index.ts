@@ -147,7 +147,7 @@ const print: FastifyPluginAsync = async (fastify) => {
       return reply.view('src/templates/document.hbs', {
         qrCode,
         parsedDate: new Date(student.signedDate).toLocaleString('zh-Hans'),
-        ...student.dataValues,
+        ...student.toJSON(),
         scoreList,
         showList,
         documentName: process.env.DOCUMENT_NAME,
