@@ -15,9 +15,7 @@ const AppPath = path.join(__dirname, '..', 'src', 'app.ts');
 // Fill in this config with all the configurations
 // needed for testing the application
 async function config() {
-  // .env
-  dotenv.config();
-  // .env.test
+  // .env and .env.test
   dotenv.config({
     path: '.env.test',
     override: true,

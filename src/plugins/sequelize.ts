@@ -33,8 +33,6 @@ export default fp(
         database: MYSQL_DATABASE,
         dialect: 'mysql',
       });
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       fastify.decorate('sequelize', sequelize);
       await sequelize.authenticate({
         logging: false,

@@ -8,7 +8,6 @@ export default fp(
       const mode = process.env.NODE_ENV;
       switch (mode) {
         case 'development':
-          dotenv.config();
           dotenv.config({
             path: '.env.development',
             override: true,
