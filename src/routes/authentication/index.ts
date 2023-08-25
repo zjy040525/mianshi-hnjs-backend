@@ -51,7 +51,6 @@ const authentication: FastifyPluginAsync = async (fastify) => {
         recordDate: Sequelize.fn('now'),
         recordUserId: user.id,
         recordType: 'Auth',
-        message: `${user.nickname || user.username} 登录系统`,
       });
       await fastify.notification.sendLog();
 

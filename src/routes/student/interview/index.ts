@@ -129,9 +129,6 @@ const interview: FastifyPluginAsync = async (fastify) => {
         recordUserId: user.id,
         recordStudentId: student.id,
         recordType: 'Interview',
-        message: `${user.nickname || user.username} 完成了 ${student.name}#${
-          student.id
-        } 的面试`,
       });
       // 发送对应的socket通知
       await fastify.notification.interview(student, user);
@@ -139,7 +136,7 @@ const interview: FastifyPluginAsync = async (fastify) => {
       reply.send(
         fastify.assign({
           code: 200,
-          data: await fastify.assoc(student),
+          data: await fastify.studentAssoc(student),
           message: '操作成功！',
         }),
       );

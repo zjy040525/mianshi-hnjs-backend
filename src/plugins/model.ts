@@ -55,7 +55,6 @@ class Log extends Model {
   declare recordUserId: string;
   declare recordStudentId: string;
   declare recordType: 'Auth' | 'Sign' | 'Print' | 'Interview';
-  declare message: string;
 }
 
 export default fp(
@@ -132,7 +131,6 @@ export default fp(
             type: DataTypes.ENUM('Auth', 'Sign', 'Print', 'Interview'),
             allowNull: false,
           },
-          message: DataTypes.STRING,
         },
         {
           sequelize: fastify.sequelize,
@@ -148,7 +146,7 @@ export default fp(
       fastify.decorate('userModel', User);
       fastify.decorate('studentModel', Student);
       fastify.decorate('logModel', Log);
-      fastify.decorate('assoc', async (studentList) => {
+      fastify.decorate('studentAssoc', async (studentList) => {
         /**
          * 合并用户信息字段对象
          * @param student 学生对象模型
@@ -190,6 +188,38 @@ export default fp(
         }
         return await assoc(studentList);
       });
+      fastify.decorate('logAssoc', async (logList) => {
+        const assoc = async (log: Log) => {
+          let recordUser = null;
+          let recordStudent = null;
+
+          if (log.recordUserId) {
+            recordUser = await fastify.userModel.findOne({
+              where: {
+                id: log.recordUserId,
+              },
+              attributes: ['username', 'nickname'],
+              logging: false,
+            });
+          }
+
+          if (log.recordStudentId) {
+            recordStudent = await fastify.studentModel.findOne({
+              where: {
+                id: log.recordStudentId,
+              },
+              logging: false,
+            });
+          }
+
+          return {
+            ...log.toJSON(),
+            recordUser,
+            recordStudent,
+          };
+        };
+        return await Promise.all(logList.map(async (log) => await assoc(log)));
+      });
       done();
     });
   },
@@ -204,8 +234,9 @@ declare module 'fastify' {
     readonly userModel: typeof User;
     readonly studentModel: typeof Student;
     readonly logModel: typeof Log;
-    readonly assoc: (
+    readonly studentAssoc: (
       studentList: Student[] | Student,
     ) => Promise<Student[] | Student>;
+    readonly logAssoc: (logList: Log[]) => Promise<Log[]>;
   }
 }
