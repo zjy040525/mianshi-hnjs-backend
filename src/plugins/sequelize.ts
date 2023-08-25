@@ -26,6 +26,7 @@ export default fp(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const sequelize = new Sequelize({
+        timezone: 'Asia/Shanghai',
         host,
         port,
         username: MYSQL_USERNAME,
