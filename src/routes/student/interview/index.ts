@@ -123,6 +123,16 @@ const interview: FastifyPluginAsync = async (fastify) => {
       );
       // 更新最新数据
       student = await student.reload();
+      // 记录日志
+      await fastify.logModel.create({
+        recordDate: Sequelize.fn('now'),
+        recordUserId: user.id,
+        recordStudentId: student.id,
+        recordType: 'Interview',
+        message: `${user.nickname || user.username} 完成了 ${student.name}#${
+          student.id
+        } 的面试`,
+      });
       // 发送对应的socket通知
       await fastify.notification.interview(student, user);
 

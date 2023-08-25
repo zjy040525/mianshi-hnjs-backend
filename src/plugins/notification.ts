@@ -83,6 +83,8 @@ export default fp(
             case 'STUDENT_WS':
               await fastify.notification.studentAll(client);
               break;
+            case 'LOG_WS':
+              await fastify.notification.logAll(client);
           }
         }
       },
@@ -111,6 +113,32 @@ export default fp(
             case 'STUDENT_WS':
               await fastify.notification.studentAll(client);
               break;
+            case 'LOG_WS':
+              await fastify.notification.logAll(client);
+          }
+        }
+      },
+      /**
+       * 推送最新日志
+       * @param client 已连接到WebSocket的实例
+       */
+      async logAll(client) {
+        const logList = await fastify.logModel.findAll();
+        client.send(
+          JSON.stringify({
+            logList,
+          }),
+        );
+      },
+      /**
+       * 推送最新日志，仅推送所有连接到LOG_WS的实例
+       * 不像sign/interview之类的，推送各种不同的实例
+       */
+      async sendLog() {
+        for (const client of fastify.websocketServer.clients as WS) {
+          switch (client.tag) {
+            case 'LOG_WS':
+              await fastify.notification.logAll(client);
           }
         }
       },
@@ -130,6 +158,8 @@ declare module 'fastify' {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       readonly sign: (student: any, user: any) => Promise<void>;
       readonly studentAll: (client: WebSocket) => Promise<void>;
+      readonly logAll: (client: WebSocket) => Promise<void>;
+      readonly sendLog: () => Promise<void>;
     };
   }
 }

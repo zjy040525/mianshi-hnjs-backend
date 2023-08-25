@@ -1,5 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { readFile } from 'fs/promises';
+import { Sequelize } from 'sequelize';
 
 /**
  * 打印面试单
@@ -103,6 +104,17 @@ const print: FastifyPluginAsync = async (fastify) => {
         );
         return;
       }
+
+      await fastify.logModel.create({
+        recordDate: Sequelize.fn('now'),
+        recordUserId: user.id,
+        recordStudentId: student.id,
+        recordType: 'Print',
+        message: `${user.nickname || user.username} 打印了 ${student.name}#${
+          student.id
+        } 的文档`,
+      });
+      await fastify.notification.sendLog();
 
       const qrCodeImage = await readFile('src/templates/QRCode.jpg');
       const qrCode = `data:image/jpg;base64,${qrCodeImage.toString('base64')}`;

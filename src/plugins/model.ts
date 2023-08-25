@@ -49,6 +49,14 @@ class Student extends Model {
   // 执行面试的用户
   declare interviewedUserId: null | number;
 }
+class Log extends Model {
+  declare id: number;
+  declare recordDate: string;
+  declare recordUserId: string;
+  declare recordStudentId: string;
+  declare recordType: 'Auth' | 'Sign' | 'Print' | 'Interview';
+  declare message: string;
+}
 
 export default fp(
   async (fastify) => {
@@ -115,6 +123,23 @@ export default fp(
           timestamps: false,
         },
       );
+      Log.init(
+        {
+          recordDate: DataTypes.STRING,
+          recordUserId: DataTypes.INTEGER,
+          recordStudentId: DataTypes.INTEGER,
+          recordType: {
+            type: DataTypes.ENUM('Auth', 'Sign', 'Print', 'Interview'),
+            allowNull: false,
+          },
+          message: DataTypes.STRING,
+        },
+        {
+          sequelize: fastify.sequelize,
+          timestamps: false,
+          modelName: 'logs',
+        },
+      );
       // 同步模型
       await fastify.sequelize.sync({
         logging: false,
@@ -122,6 +147,7 @@ export default fp(
       console.log(chalk.green('All models were synchronized successfully.'));
       fastify.decorate('userModel', User);
       fastify.decorate('studentModel', Student);
+      fastify.decorate('logModel', Log);
       fastify.decorate('assoc', async (studentList) => {
         /**
          * 合并用户信息字段对象
@@ -177,6 +203,7 @@ declare module 'fastify' {
   export interface FastifyInstance {
     readonly userModel: typeof User;
     readonly studentModel: typeof Student;
+    readonly logModel: typeof Log;
     readonly assoc: (
       studentList: Student[] | Student,
     ) => Promise<Student[] | Student>;
