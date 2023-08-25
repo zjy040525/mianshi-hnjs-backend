@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 import type { FastifyPluginAsync } from 'fastify';
+import { Sequelize } from 'sequelize';
 
 /**
  * 用户身份认证
@@ -46,6 +47,14 @@ const authentication: FastifyPluginAsync = async (fastify) => {
         password: user.password,
         role: user.role,
       });
+      await fastify.logModel.create({
+        recordDate: Sequelize.fn('now'),
+        recordUserId: user.id,
+        recordType: 'Auth',
+        message: `${user.nickname || user.username} 登录系统`,
+      });
+      await fastify.notification.sendLog();
+
       reply.send(
         fastify.assign({
           code: 200,

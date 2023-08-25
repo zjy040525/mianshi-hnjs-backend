@@ -94,6 +94,16 @@ const sign: FastifyPluginAsync = async (fastify) => {
       );
       // 更新最新数据
       student = await student.reload();
+      // 记录日志
+      await fastify.logModel.create({
+        recordDate: Sequelize.fn('now'),
+        recordUserId: user.id,
+        recordStudentId: student.id,
+        recordType: 'Sign',
+        message: `${user.nickname || user.username} 完成了 ${student.name}（${
+          student.idCard
+        }） 的签到`,
+      });
       // 发送对应的socket通知
       await fastify.notification.sign(student, user);
 
