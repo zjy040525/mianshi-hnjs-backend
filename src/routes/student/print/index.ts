@@ -110,9 +110,6 @@ const print: FastifyPluginAsync = async (fastify) => {
         recordUserId: user.id,
         recordStudentId: student.id,
         recordType: 'Print',
-        message: `${user.nickname || user.username} 打印了 ${student.name}#${
-          student.id
-        } 的文档`,
       });
       await fastify.notification.sendLog();
 

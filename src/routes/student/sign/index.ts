@@ -100,9 +100,6 @@ const sign: FastifyPluginAsync = async (fastify) => {
         recordUserId: user.id,
         recordStudentId: student.id,
         recordType: 'Sign',
-        message: `${user.nickname || user.username} 完成了 ${student.name}（${
-          student.idCard
-        }） 的签到`,
       });
       // 发送对应的socket通知
       await fastify.notification.sign(student, user);
@@ -110,7 +107,7 @@ const sign: FastifyPluginAsync = async (fastify) => {
       reply.send(
         fastify.assign({
           code: 200,
-          data: await fastify.assoc(student),
+          data: await fastify.studentAssoc(student),
           message: '签到成功！',
         }),
       );

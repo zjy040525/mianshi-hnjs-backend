@@ -44,7 +44,7 @@ export default fp(
             },
           });
         const studentAll = await fastify.studentModel.findAll();
-        const studentList = await fastify.assoc(studentAll);
+        const studentList = await fastify.studentAssoc(studentAll);
 
         client.send(
           JSON.stringify({
@@ -123,10 +123,10 @@ export default fp(
        * @param client 已连接到WebSocket的实例
        */
       async logAll(client) {
-        const logList = await fastify.logModel.findAll();
+        const logAll = await fastify.logModel.findAll();
         client.send(
           JSON.stringify({
-            logList,
+            logList: await fastify.logAssoc(logAll),
           }),
         );
       },

@@ -26,13 +26,13 @@ export default fp(
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const sequelize = new Sequelize({
-        timezone: 'Asia/Shanghai',
         host,
         port,
         username: MYSQL_USERNAME,
         password: MYSQL_PASSWORD,
         database: MYSQL_DATABASE,
         dialect: 'mysql',
+        timezone: '+08:00',
       });
       fastify.decorate('sequelize', sequelize);
       await sequelize.authenticate({
