@@ -113,7 +113,7 @@ const print: FastifyPluginAsync = async (fastify) => {
       });
       await fastify.notification.sendLog();
 
-      const qrCodeImage = await readFile('src/templates/QRCode.jpg');
+      const qrCodeImage = await readFile('public/assets/QRCode.jpg');
       const qrCode = `data:image/jpg;base64,${qrCodeImage.toString('base64')}`;
       const majors = [
         student.urbanRailTransitInterview
