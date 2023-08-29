@@ -7,58 +7,6 @@ export default fp(
   async (fastify) => {
     fastify.decorate('notification', {
       /**
-       * 推送所有学生的最新记录消息
-       * @param client 已连接到WebSocket的实例
-       */
-      async studentAll(client) {
-        // 获取签到人数
-        const { count: signedCount } =
-          await fastify.studentModel.findAndCountAll({
-            where: {
-              signStatus: true,
-            },
-          });
-        // 获取未签到人数
-        const { count: noSignedCount } =
-          await fastify.studentModel.findAndCountAll({
-            where: {
-              signStatus: false,
-            },
-          });
-        // 获取已面试人数
-        const { count: interviewedCount } =
-          await fastify.studentModel.findAndCountAll({
-            where: {
-              signStatus: true,
-              interviewedUserId: {
-                [Op.not]: null,
-              },
-            },
-          });
-        // 获取未面试人数
-        const { count: noInterviewedCount } =
-          await fastify.studentModel.findAndCountAll({
-            where: {
-              signStatus: true,
-              interviewedUserId: null,
-            },
-          });
-        const studentAll = await fastify.studentModel.findAll();
-        const studentList = await fastify.studentAssoc(studentAll);
-
-        client.send(
-          JSON.stringify({
-            countList: {
-              signedCount,
-              noSignedCount,
-              interviewedCount,
-              noInterviewedCount,
-            },
-            studentList,
-          }),
-        );
-      },
-      /**
        * 推送学生面试的消息
        * @param student 面试的学生
        * @param user 为该学生进行面试的用户
@@ -119,6 +67,76 @@ export default fp(
         }
       },
       /**
+       * 推送所有学生的最新记录消息
+       * @param client 已连接到WebSocket的实例
+       */
+      async studentAll(client) {
+        // 获取签到人数
+        const { count: signedCount } =
+          await fastify.studentModel.findAndCountAll({
+            where: {
+              signStatus: true,
+            },
+            logging: false,
+          });
+        // 获取未签到人数
+        const { count: noSignedCount } =
+          await fastify.studentModel.findAndCountAll({
+            where: {
+              signStatus: false,
+            },
+            logging: false,
+          });
+        // 获取已面试人数
+        const { count: interviewedCount } =
+          await fastify.studentModel.findAndCountAll({
+            where: {
+              signStatus: true,
+              interviewedUserId: {
+                [Op.not]: null,
+              },
+            },
+            logging: false,
+          });
+        // 获取未面试人数
+        const { count: noInterviewedCount } =
+          await fastify.studentModel.findAndCountAll({
+            where: {
+              signStatus: true,
+              interviewedUserId: null,
+            },
+            logging: false,
+          });
+        const studentAll = await fastify.studentModel.findAll({
+          logging: false,
+        });
+        const studentList = await fastify.studentAssoc(studentAll);
+
+        client.send(
+          JSON.stringify({
+            countList: {
+              signedCount,
+              noSignedCount,
+              interviewedCount,
+              noInterviewedCount,
+            },
+            studentList,
+          }),
+        );
+      },
+      /**
+       * 推送最新学生列表，仅推送所有连接到STUDENT_WS的实例
+       * 这个不像sign/interview之类的，推送各种不同的实例
+       */
+      async sendStudent() {
+        for (const client of fastify.websocketServer.clients as WS) {
+          switch (client.tag) {
+            case 'STUDENT_WS':
+              await fastify.notification.studentAll(client);
+          }
+        }
+      },
+      /**
        * 推送最新日志
        * @param client 已连接到WebSocket的实例
        */
@@ -132,7 +150,7 @@ export default fp(
       },
       /**
        * 推送最新日志，仅推送所有连接到LOG_WS的实例
-       * 不像sign/interview之类的，推送各种不同的实例
+       * 这个不像sign/interview之类的，推送各种不同的实例
        */
       async sendLog() {
         for (const client of fastify.websocketServer.clients as WS) {
@@ -158,6 +176,7 @@ declare module 'fastify' {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       readonly sign: (student: any, user: any) => Promise<void>;
       readonly studentAll: (client: WebSocket) => Promise<void>;
+      readonly sendStudent: () => Promise<void>;
       readonly logAll: (client: WebSocket) => Promise<void>;
       readonly sendLog: () => Promise<void>;
     };

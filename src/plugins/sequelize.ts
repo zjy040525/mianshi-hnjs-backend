@@ -32,7 +32,6 @@ export default fp(
         password: MYSQL_PASSWORD,
         database: MYSQL_DATABASE,
         dialect: 'mysql',
-        timezone: '+08:00',
       });
       fastify.decorate('sequelize', sequelize);
       await sequelize.authenticate({
