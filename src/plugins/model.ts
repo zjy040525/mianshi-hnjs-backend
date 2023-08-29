@@ -50,11 +50,31 @@ class Student extends Model {
   declare interviewedUserId: null | number;
 }
 class Log extends Model {
+  // 主键
   declare id: number;
+  // 记录时间
   declare recordDate: string;
+  // 记录用户的id
   declare recordUserId: string;
+  // 记录学生的id
   declare recordStudentId: string;
+  // 记录操作类型
   declare recordType: 'Auth' | 'Sign' | 'Print' | 'Interview';
+  declare recordEarlyChildhoodEducationInterview:
+    | 'Processing'
+    | 'Success'
+    | 'Failed'
+    | null;
+  declare recordTourismManagementInterview:
+    | 'Processing'
+    | 'Success'
+    | 'Failed'
+    | null;
+  declare recordUrbanRailTransitInterview:
+    | 'Processing'
+    | 'Success'
+    | 'Failed'
+    | null;
 }
 
 export default fp(
@@ -131,6 +151,21 @@ export default fp(
             type: DataTypes.ENUM('Auth', 'Sign', 'Print', 'Interview'),
             allowNull: false,
           },
+          recordEarlyChildhoodEducationInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
+          recordTourismManagementInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
+          recordUrbanRailTransitInterview: DataTypes.ENUM(
+            'Processing',
+            'Success',
+            'Failed',
+          ),
         },
         {
           sequelize: fastify.sequelize,
