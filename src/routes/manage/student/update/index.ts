@@ -70,11 +70,20 @@ const update: FastifyPluginAsync = async (fastify) => {
             id: interviewedUserId,
           },
         });
-        if (!(signedUser && interviewedUser)) {
+        if (!signedUser) {
           reply.code(400).send(
             fastify.assign({
               code: 400,
-              message: '用户不存在！',
+              message: '签到的执行人不存在！',
+            }),
+          );
+          return;
+        }
+        if (!interviewedUser) {
+          reply.code(400).send(
+            fastify.assign({
+              code: 400,
+              message: '面试的执行人不存在！',
             }),
           );
           return;
