@@ -129,6 +129,11 @@ const interview: FastifyPluginAsync = async (fastify) => {
         recordUserId: user.id,
         recordStudentId: student.id,
         recordType: 'Interview',
+        // 记录本次面试的结果
+        recordEarlyChildhoodEducationInterview:
+          student.earlyChildhoodEducationInterview,
+        recordTourismManagementInterview: student.tourismManagementInterview,
+        recordUrbanRailTransitInterview: student.urbanRailTransitInterview,
       });
       // 发送对应的socket通知
       await fastify.notification.interview(student, user);
