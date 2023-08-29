@@ -124,7 +124,7 @@ export default fp(
       );
       Log.init(
         {
-          recordDate: DataTypes.STRING,
+          recordDate: DataTypes.DATE,
           recordUserId: DataTypes.INTEGER,
           recordStudentId: DataTypes.INTEGER,
           recordType: {
