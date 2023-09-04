@@ -1,11 +1,9 @@
 name: API Prod Deploy to WeChat Cloud Run
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
 
 permissions:
   contents: read
@@ -17,9 +15,6 @@ concurrency:
 
 jobs:
   deploy:
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
     env:
       WXCLOUD_SERVICE_NAME: ${{ secrets.WXCLOUD_PROD_SERVICE_NAME }}
       WXCLOUD_APPID: ${{ secrets.WXCLOUD_APPID }}
@@ -30,10 +25,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18.x
           cache: npm
 
       - name: Install @wxcloud/cli
@@ -43,4 +38,4 @@ jobs:
         run: wxcloud login --appId="$WXCLOUD_APPID" --privateKey="$WXCLOUD_CLI_SECRET"
 
       - name: Deploy to WeChat Cloud Run
-        run: wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile --containerPort=3000 --envId="$WXCLOUD_ENVID" --serviceName="$WXCLOUD_SERVICE_NAME" --noConfirm --releaseType=FULL
+        run: wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile --containerPort=3000 --envId="$WXCLOUD_ENVID" --serviceName="$WXCLOUD_SERVICE_NAME" --noConfirm --releaseType=FULL --remark="${{ github.event.head_commit.message || github.actor }}"
