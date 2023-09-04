@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:18-alpine
 
 RUN apk add tzdata \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -8,10 +8,10 @@ RUN apk add tzdata \
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json /app/
 
 RUN npm install --registry=https://mirrors.cloud.tencent.com/npm/
 
-COPY . ./
+COPY . /app
 
 CMD ["npm", "start"]
