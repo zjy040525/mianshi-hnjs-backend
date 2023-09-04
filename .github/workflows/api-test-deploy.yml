@@ -1,11 +1,9 @@
 name: API Test Deploy to WeChat Cloud Run
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - test
-  pull_request:
 
 permissions:
   contents: read
