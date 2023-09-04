@@ -8,10 +8,10 @@ RUN apk add tzdata \
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package*.json ./
 
 RUN npm install --registry=https://mirrors.cloud.tencent.com/npm/
 
-COPY . /app
+COPY . ./
 
 CMD ["npm", "start"]
