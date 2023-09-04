@@ -1,11 +1,9 @@
 name: API Prod Deploy to WeChat Cloud Run
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
 
 permissions:
   contents: read
