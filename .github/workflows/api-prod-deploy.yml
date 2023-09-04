@@ -1,0 +1,46 @@
+name: API Prod Deploy to WeChat Cloud Run
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+    env:
+      WXCLOUD_SERVICE_NAME: ${{ secrets.WXCLOUD_PROD_SERVICE_NAME }}
+      WXCLOUD_APPID: ${{ secrets.WXCLOUD_APPID }}
+      WXCLOUD_CLI_SECRET: ${{ secrets.WXCLOUD_CLI_SECRET }}
+      WXCLOUD_ENVID: ${{ secrets.WXCLOUD_ENVID }}
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install @wxcloud/cli
+        run: npm i -g @wxcloud/cli
+
+      - name: Login @wxcloud/cli
+        run: wxcloud login --appId="$WXCLOUD_APPID" --privateKey="$WXCLOUD_CLI_SECRET"
+
+      - name: Deploy to WeChat Cloud Run
+        run: wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile --containerPort=3000 --envId="$WXCLOUD_ENVID" --serviceName="$WXCLOUD_SERVICE_NAME" --noConfirm --releaseType=FULL
