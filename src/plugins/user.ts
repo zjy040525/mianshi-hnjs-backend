@@ -10,7 +10,7 @@ export default fp(
         if (mode === 'test' && !process.env.TEST_PASSWORD) {
           throw new Error('required `TEST_PASSWORD` environment variable!');
         }
-        for (const user of JSON.parse(users)) {
+        for (const user of JSON.parse(JSON.parse(JSON.stringify(users)))) {
           const [username, nickname, pwd] = user;
           // 用户密码
           const password = new Password(
