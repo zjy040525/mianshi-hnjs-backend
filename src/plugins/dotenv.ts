@@ -6,6 +6,7 @@ export default fp(
   async (fastify) => {
     await fastify.register(async (_fastify, _options, done) => {
       const mode = process.env.NODE_ENV;
+      // 获取其他环境的变量，默认只会获取 .env
       switch (mode) {
         case 'development':
           dotenv.config({
@@ -19,6 +20,11 @@ export default fp(
             override: true,
           });
           break;
+        case 'test':
+          dotenv.config({
+            path: '.env.test',
+            override: true,
+          });
       }
       // 测试环境的变量在`test/helper.ts`中的config函数进行配置
       // 测试环境是独立的node环境，这里不能获取到
