@@ -20,6 +20,7 @@ jobs:
       WXCLOUD_APPID: ${{ secrets.WXCLOUD_APPID }}
       WXCLOUD_CLI_SECRET: ${{ secrets.WXCLOUD_CLI_SECRET }}
       WXCLOUD_ENVID: ${{ secrets.WXCLOUD_ENVID }}
+      REMARK: ${{ github.event.head_commit.message || github.actor }}
     runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     steps:
       - name: Checkout
@@ -38,4 +39,4 @@ jobs:
         run: wxcloud login --appId="$WXCLOUD_APPID" --privateKey="$WXCLOUD_CLI_SECRET"
 
       - name: Deploy to WeChat Cloud Run
-        run: wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile.test --containerPort=3000 --envId="$WXCLOUD_ENVID" --serviceName="$WXCLOUD_SERVICE_NAME" --noConfirm --releaseType=FULL --remark="${{ github.event.head_commit.message || github.actor }}"
+        run: wxcloud run:deploy --targetDir=. --dockerfile=Dockerfile.test --containerPort=3000 --envId="$WXCLOUD_ENVID" --serviceName="$WXCLOUD_SERVICE_NAME" --noConfirm --releaseType=FULL --remark="$REMARK"
