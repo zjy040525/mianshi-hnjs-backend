@@ -20,7 +20,7 @@ jobs:
       WXCLOUD_APPID: ${{ secrets.WXCLOUD_APPID }}
       WXCLOUD_CLI_SECRET: ${{ secrets.WXCLOUD_CLI_SECRET }}
       WXCLOUD_ENVID: ${{ secrets.WXCLOUD_ENVID }}
-      REMARK: ${{ github.event.head_commit.message || github.actor }}
+      REMARK: ${{ github.event.head_commit.id || github.actor }}
     runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     steps:
       - name: Checkout
